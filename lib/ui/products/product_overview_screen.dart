@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:myshop/ui/cart/cart_manager.dart';
 import 'package:myshop/ui/cart/cart_screen.dart';
 import 'package:myshop/ui/products/product_grid_tile.dart';
 import 'package:myshop/ui/products/products_grid.dart';
+import 'package:myshop/ui/products/top_right_badge.dart';
 import 'package:myshop/ui/shared/app_drawer.dart';
 
 enum FilterOptions { favorite, all }
@@ -22,8 +24,8 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
         title: const Text('MyShop'),
         backgroundColor: Theme.of(context).colorScheme.primary,
         actions: <Widget>[
-          buildProductFilterMenu(),
           buildShoppingCartIcon(),
+          buildProductFilterMenu(),
         ],
       ),
       drawer: const AppDrawer(),
@@ -32,11 +34,14 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
   }
 
   Widget buildShoppingCartIcon() {
-    return IconButton(
-        onPressed: () {
+    return TopRightBage(
+      data: CartManager().productCount,
+      child: IconButton(
+          onPressed: () {
           Navigator.of(context).pushNamed(CartScreen.routeName);
-        },
-        icon: const Icon(Icons.shopping_cart));
+          },
+          icon: const Icon(Icons.shopping_cart)),
+    );
   }
 
   Widget buildProductFilterMenu() {
