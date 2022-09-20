@@ -13,7 +13,7 @@ class CartManager {
       title: 'Blue Shirt',
       price: 19.99,
       quantity: 1,
-    )
+    ),
   };
 
   int get productCount {
