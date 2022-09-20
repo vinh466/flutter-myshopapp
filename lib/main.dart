@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:myshop/ui/products/product_detail_screen.dart';
-import 'package:myshop/ui/products/product_grid_tile.dart';
-import 'package:myshop/ui/products/product_overview_screen.dart';
-import 'package:myshop/ui/products/products_manager.dart';
-import 'package:myshop/ui/products/user_products_screen.dart';
+import 'package:myshop/ui/screens.dart';
 
 void main() {
   runApp(const MyShop());
@@ -15,20 +11,32 @@ class MyShop extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'My Shop',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        fontFamily: 'Lato',
-        colorScheme: ColorScheme.fromSwatch(
-          primarySwatch: Colors.blue,
-        ).copyWith(
-          secondary: Colors.deepOrange,
-          primary: Colors.purple,
+        title: 'My Shop',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          fontFamily: 'Lato',
+          colorScheme: ColorScheme.fromSwatch(
+            primarySwatch: Colors.blue,
+          ).copyWith(
+            secondary: Colors.deepOrange,
+            primary: Colors.purple,
+          ),
         ),
-      ),
-      home: SafeArea(
-        child: UserProductsScreen(),
-      ),
-    );
+        home: const ProductsOverviewScreen(),
+        routes: {
+          CartScreen.routeName: (ctx) => const CartScreen(),
+          OrderScreen.routeName: (ctx) => const OrderScreen(),
+          UserProductsScreen.routeName: (ctx) => const UserProductsScreen(),
+        },
+        onGenerateRoute: (settings) {
+          if (settings.name == ProductDetailScreen.routeName) {
+            final productId = settings.arguments as String;
+            return MaterialPageRoute(builder: (ctx) {
+              return ProductDetailScreen(
+                ProductsManager().findById(productId),
+              );
+            });
+          }
+        });
   }
 }

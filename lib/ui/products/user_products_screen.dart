@@ -3,8 +3,11 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:myshop/ui/products/products_manager.dart';
 import 'package:myshop/ui/products/user_product_list_tile.dart';
+import 'package:myshop/ui/shared/app_drawer.dart';
 
 class UserProductsScreen extends StatelessWidget {
+  static const routeName = '/user-products';
+
   const UserProductsScreen({super.key});
 
   @override
@@ -17,6 +20,7 @@ class UserProductsScreen extends StatelessWidget {
           buildAddButton(),
         ],
       ),
+      drawer: const AppDrawer(),
       body: RefreshIndicator(
         onRefresh: () async => print('Refresh products'),
         child: buildUserProductListView(productsManager),
