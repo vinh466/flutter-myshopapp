@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:provider/provider.dart';
+import 'package:myshop/models/product.dart';
 import 'package:myshop/ui/products/product_grid_tile.dart';
 import 'package:myshop/ui/products/products_manager.dart';
 
@@ -11,9 +11,12 @@ class ProductsGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final productsManager = ProductsManager();
-    final products =
-        showFavorite ? productsManager.favoriteItems : productsManager.items;
+    // final productsManager = ProductsManager();
+    final products = context.select<ProductsManager, List<Product>>(
+        (productsManager) => showFavorite
+            ? productsManager.favoriteItems
+            : productsManager.items);
+
     return GridView.builder(
       padding: const EdgeInsets.all(10.0),
       itemCount: products.length,
