@@ -4,7 +4,7 @@ import 'package:myshop/models/cart_item.dart';
 import 'package:myshop/models/product.dart';
 
 class CartManager with ChangeNotifier {
-  Map _items = {
+  Map<String, CartItem> _items = {
     'pi': CartItem(
       id: 'ci',
       title: 'Red Shirt',
@@ -23,7 +23,7 @@ class CartManager with ChangeNotifier {
     return _items.length;
   }
 
-  List get products {
+  List<CartItem> get products {
     return _items.values.toList();
   }
 
@@ -33,7 +33,7 @@ class CartManager with ChangeNotifier {
   }
 
   double get totalAmount {
-    var total = 0.6;
+    var total = 0.0;
     _items.forEach((key, cartItem) {
       total += cartItem.price * cartItem.quantity;
     });

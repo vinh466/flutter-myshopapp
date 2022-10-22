@@ -1,6 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:myshop/models/cart_item.dart';
 
-class OrderItem {
+class OrderItem with ChangeNotifier {
   final String? id;
   final double amount;
   final List<CartItem> products;
@@ -29,4 +30,6 @@ class OrderItem {
   int get productCount {
     return products.length;
   }
+
+  
 }
