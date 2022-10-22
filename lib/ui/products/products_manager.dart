@@ -57,6 +57,7 @@ class ProductsManager with ChangeNotifier {
 
   void addProduct(Product product) {
     _items.add(product.copyWith(id: 'p${DateTime.now().toIso8601String()}'));
+    notifyListeners();
   }
 
   void updateProduct(Product product) {
