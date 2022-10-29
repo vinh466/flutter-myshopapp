@@ -119,4 +119,27 @@ class ProductsService extends FirebaseService {
       return false;
     }
   }
+
+  Future<bool> saveFavoriteStatus(Product product) async {
+    try {
+      final url = Uri.parse(
+          '$databaseUrl/userFavorites/$userId/${product.id}.json?auth=$token');
+      final response = await http.put(
+        url,
+        body: json.encode(
+          product.isFavorite,
+        ),
+      );
+
+      if (response.statusCode != 200) {
+        print('saveFavoriteStatus $userId');
+        throw Exception(json.decode(response.body)['error']);
+      }
+      print('saveFavoriteStatus success');
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
 }
