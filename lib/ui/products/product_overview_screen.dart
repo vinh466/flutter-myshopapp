@@ -3,6 +3,7 @@ import 'package:myshop/ui/cart/cart_manager.dart';
 import 'package:myshop/ui/cart/cart_screen.dart';
 import 'package:myshop/ui/products/product_grid_tile.dart';
 import 'package:myshop/ui/products/products_grid.dart';
+import 'package:myshop/ui/products/products_manager.dart';
 import 'package:myshop/ui/products/top_right_badge.dart';
 import 'package:myshop/ui/shared/app_drawer.dart';
 import 'package:provider/provider.dart';
@@ -17,7 +18,15 @@ class ProductsOverviewScreen extends StatefulWidget {
 }
 
 class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
-  var _showOnlyFavorite = false;
+  var _showOnlyFavorite = ValueNotifier<bool>(false);
+  late Future<void> _fetchProducts;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchProducts = context.read<ProductsManager>().fetchProducts();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +39,22 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
         ],
       ),
       drawer: const AppDrawer(),
-      body: ProductsGrid(_showOnlyFavorite),
+      body: FutureBuilder(
+        future: _fetchProducts,
+        builder: ((context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            return ValueListenableBuilder<bool>(
+              valueListenable: _showOnlyFavorite,
+              builder: ((context, showOnlyFavorite, child) {
+                return ProductsGrid(showOnlyFavorite);
+              }),
+            );
+          }
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }),
+      ),
     );
   }
 
@@ -52,9 +76,9 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
       onSelected: (FilterOptions selectedValue) {
         setState(() {
           if (selectedValue == FilterOptions.favorite) {
-            _showOnlyFavorite = true;
+            _showOnlyFavorite.value = true;
           } else {
-            _showOnlyFavorite = false;
+            _showOnlyFavorite.value = false;
           }
         });
       },

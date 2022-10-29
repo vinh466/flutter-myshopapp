@@ -20,17 +20,24 @@ class MyShop extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (ctx) => ProductsManager(),
+          create: (ctx) => AuthManager(),
         ),
+        ChangeNotifierProxyProvider<AuthManager, ProductsManager>(
+          create: (ctx) => ProductsManager(),
+          update: (ctx, authManager, productsManager) {
+            productsManager!.authToken = authManager.authToken!;
+            return productsManager;
+          },
+        ),
+        // ChangeNotifierProvider(
+        //   create: (ctx) => ProductsManager(),
+        // ),
         ChangeNotifierProvider(
           create: (ctx) => CartManager(),
         ),
         ChangeNotifierProvider(
           create: (ctx) => OrdersManager(),
         ),
-        ChangeNotifierProvider(
-          create: (ctx) => AuthManager(),
-        )
       ],
       child: Consumer<AuthManager>(
         builder: (ctx, authManager, child) {
