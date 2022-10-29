@@ -76,9 +76,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
     try {
       final productsManager = context.read<ProductsManager>();
       if (_editedProduct.id != null) {
-        productsManager.updateProduct(_editedProduct);
+        await productsManager.updateProduct(_editedProduct);
       } else {
-        productsManager.addProduct(_editedProduct);
+        await productsManager.addProduct(_editedProduct);
       }
     } catch (error) {
       await showErrorDialog(context, 'Something went wrong.');
@@ -242,24 +242,6 @@ class _EditProductScreenState extends State<EditProductScreen> {
       onSaved: (value) {
         _editedProduct = _editedProduct.copyWith(imageUrl: value);
       },
-    );
-  }
-
-  Future<void> showErrorDialog(BuildContext context, String message) {
-    return showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('An Error Occurred!'),
-        content: Text(message),
-        actions: <Widget>[
-          TextButton(
-            child: const Text('Okay'),
-            onPressed: () {
-              Navigator.of(ctx).pop();
-            },
-          )
-        ],
-      ),
     );
   }
 }
