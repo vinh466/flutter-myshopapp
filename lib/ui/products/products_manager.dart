@@ -4,7 +4,10 @@ import 'package:myshop/models/product.dart';
 import 'package:myshop/services/products_service.dart';
 
 class ProductsManager with ChangeNotifier {
-  List<Product> _items = [];
+  List<Product> _items = [
+
+    
+  ];
   final ProductsService _productsService;
 
   ProductsManager([AuthToken? authToken])
